@@ -29,7 +29,7 @@ export const processStatementWithGemini = async (file: File): Promise<Processing
     const base64Data = await fileToBase64(file);
     
     // Initialize Gemini model
-    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
 
     // Create the prompt for bank statement analysis
     const prompt = `
@@ -116,11 +116,26 @@ PDFから読み取れない部分や不明な部分がある場合は、isValid�
       };
     }
 
-  } catch (error) {
-    console.error('Gemini API error:', error);
+  } catch (error: any) { // Add :any to inspect error properties
+    console.error('Gemini API error:', error); // Log the full error for debugging
+
+    let userErrorMessage = 'AI処理中にエラーが発生しました。しばらく時間をおいて再試行してください。';
+
+    // Attempt to detect a rate limit error (e.g., 429)
+    // This checks common patterns; the actual error structure from Gemini SDK might vary.
+    if (
+      (error.message && typeof error.message === 'string' && error.message.includes('429')) ||
+      (error.message && typeof error.message === 'string' && /rate limit/i.test(error.message)) ||
+      (error.response && error.response.status === 429) ||
+      (error.code && error.code === 429) ||
+      (error.code && typeof error.code === 'string' && error.code.toUpperCase() === 'RESOURCE_EXHAUSTED') // Common gRPC code for rate limits
+    ) {
+      userErrorMessage = 'AI処理のリクエストが頻度制限を超えました。しばらく時間をおいてから再試行してください。(Rate limit exceeded)';
+    }
+
     return {
       success: false,
-      error: 'AI処理中にエラーが発生しました。しばらく時間をおいて再試行してください。'
+      error: userErrorMessage
     };
   }
 };
