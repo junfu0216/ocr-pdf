@@ -1,0 +1,15 @@
+name = "vite-react-typescript-starter"
+compatibility_date = "2024-07-16" # Assuming today's date for compatibility
+
+# Configure for deploying a static site (Cloudflare Pages)
+[pages]
+# The directory containing your static assets.
+# It should be the output directory of your build command.
+assets.directory = "./dist"
+
+# Optional: Configure a custom build command if needed
+# pages_build_output_dir = "./dist" # Already defaults to looking for standard framework dirs like dist, public, _site etc.
+
+# Optional: Include or exclude files from the deployment
+# assets.include = ["*.html", "*.css", "*.js"]
+# assets.exclude = ["node_modules/*"]

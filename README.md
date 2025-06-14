@@ -66,3 +66,19 @@ npm run dev
 - Gemini APIキーが設定されていない場合、デモデータが表示されます
 - PDFの形式によっては、抽出精度が異なる場合があります
 - 抽出されたデータは必ず確認・検証してからご使用ください
+
+## Deployment
+
+This project is configured for deployment to Cloudflare Pages.
+
+To deploy the application:
+
+1.  **Build the project:**
+    ```bash
+    npm run build
+    ```
+2.  **Deploy to Cloudflare Pages:**
+    ```bash
+    npm run deploy
+    ```
+    This command uses `wrangler` to deploy the contents of the `./dist` directory. Ensure you have `wrangler` installed and configured (`npm install -D wrangler` is already done for this project). You will need to be logged into your Cloudflare account via `wrangler login`.
