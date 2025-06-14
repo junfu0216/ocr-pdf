@@ -1,15 +1,13 @@
 name = "vite-react-typescript-starter"
-compatibility_date = "2024-07-16" # Assuming today's date for compatibility
+compatibility_date = "2024-07-16" # Retain the previous compatibility date
 
-# Configure for deploying a static site (Cloudflare Pages)
-[pages]
-# The directory containing your static assets.
-# It should be the output directory of your build command.
-assets.directory = "./dist"
+# Configure for deploying a directory of static assets with a Worker
+# This is used when the platform executes 'wrangler versions upload' or 'wrangler deploy'
+# and expects a Worker configuration.
+[assets]
+directory = "./dist"
 
-# Optional: Configure a custom build command if needed
-# pages_build_output_dir = "./dist" # Already defaults to looking for standard framework dirs like dist, public, _site etc.
-
-# Optional: Include or exclude files from the deployment
-# assets.include = ["*.html", "*.css", "*.js"]
-# assets.exclude = ["node_modules/*"]
+# If a main worker script (e.g., src/index.ts) were present and needed, it would be:
+# main = "src/index.ts"
+# However, we are deploying only static assets, so 'main' is omitted.
+# Wrangler should serve from the 'assets.directory' if 'main' is not specified.
